@@ -8,5 +8,6 @@ namespace Pay.Models
         public Guid ObjectId { get; set; }
         public string ObjectType { get; set; }
         public decimal Price { get; set; }
+        public decimal Quantity { get; set; }
     }
 }

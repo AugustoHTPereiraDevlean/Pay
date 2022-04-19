@@ -2,9 +2,9 @@ using Pay.Models.Base;
 
 namespace Pay.Models
 {
-    public class PaymentHistorical : Model
+    public class SubscriptionHistoric : Model
     {
-        public Payment Payment { get; set; }
+        public Subscription Subscription { get; set; }
         public string Historic { get; set; }
     }
 }

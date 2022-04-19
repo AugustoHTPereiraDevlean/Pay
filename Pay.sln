@@ -7,6 +7,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{BF6DE352-65C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pay.Models", "src\Pay.Models\Pay.Models.csproj", "{8DC6B72C-A0F4-43BC-9EC9-89DE87C6541E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pay.Data", "src\Pay.Data\Pay.Data.csproj", "{F434CCDF-95B2-475E-84F7-DBE3F5DA0CF6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pay.CrossCutting", "src\Pay.CrossCutting\Pay.CrossCutting.csproj", "{9E014CE7-0BB5-4CEE-95EF-5BF2368A0206}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,8 +24,18 @@ Global
 		{8DC6B72C-A0F4-43BC-9EC9-89DE87C6541E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DC6B72C-A0F4-43BC-9EC9-89DE87C6541E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DC6B72C-A0F4-43BC-9EC9-89DE87C6541E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F434CCDF-95B2-475E-84F7-DBE3F5DA0CF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F434CCDF-95B2-475E-84F7-DBE3F5DA0CF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F434CCDF-95B2-475E-84F7-DBE3F5DA0CF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F434CCDF-95B2-475E-84F7-DBE3F5DA0CF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E014CE7-0BB5-4CEE-95EF-5BF2368A0206}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E014CE7-0BB5-4CEE-95EF-5BF2368A0206}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E014CE7-0BB5-4CEE-95EF-5BF2368A0206}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E014CE7-0BB5-4CEE-95EF-5BF2368A0206}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8DC6B72C-A0F4-43BC-9EC9-89DE87C6541E} = {BF6DE352-65C4-4640-AD99-85393F667EDB}
+		{F434CCDF-95B2-475E-84F7-DBE3F5DA0CF6} = {BF6DE352-65C4-4640-AD99-85393F667EDB}
+		{9E014CE7-0BB5-4CEE-95EF-5BF2368A0206} = {BF6DE352-65C4-4640-AD99-85393F667EDB}
 	EndGlobalSection
 EndGlobal
