@@ -10,4 +10,9 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Pay.Data\Pay.Data.csproj" />
+    <ProjectReference Include="..\Pay.Services\Pay.Services.csproj" />
+  </ItemGroup>
+
 </Project>
