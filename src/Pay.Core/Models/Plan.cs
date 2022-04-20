@@ -1,6 +1,6 @@
 using Pay.Core.Base;
 
-namespace Pay.Core
+namespace Pay.Core.Models
 {
     public class Plan : Model
     {
