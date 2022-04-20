@@ -1,7 +1,8 @@
-using Pay.Data.Abstractions;
+using Dapper;
+using Pay.Core.Abstractions.Repositories;
+using Pay.Core.Models;
 using Pay.Data.Base;
 using Pay.Data.Connection;
-using Pay.Models;
 
 namespace Pay.Data.Repositories
 {
@@ -21,14 +22,20 @@ namespace Pay.Data.Repositories
             }
         }
 
-        public Task<OrderItem> SelectAsync(Guid id)
+        public async Task<OrderItem> SelectAsync(Guid id)
         {
-            throw new NotImplementedException();
+            using (Connection)
+            {
+                return await Connection.QueryFirstOrDefaultAsync<OrderItem>("select * from OrderItems where Id = @Id", new { Id = id });
+            }
         }
 
-        public Task UpdateAsync(OrderItem model)
+        public async Task UpdateAsync(OrderItem model)
         {
-            throw new NotImplementedException();
+            using (Connection)
+            {
+                await Connection.ExecuteAsync("update OrderItems set OrderId = @OrderId, ObjectId = @ObjectId, ObjectType = @ObjectType, Price = @Price, Quantity = @Quantity, CreatedAt = @CreatedAt where Id = @Id", model); 
+            }
         }
     }
 }

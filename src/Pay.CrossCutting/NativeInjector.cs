@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
-using Pay.Data.Abstractions;
+using Pay.Core.Abstractions.Repositories;
+using Pay.Core.Abstractions.Services;
 using Pay.Data.Connection;
 using Pay.Data.Repositories;
 

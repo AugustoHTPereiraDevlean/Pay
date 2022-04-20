@@ -101,3 +101,11 @@ create table PaymentHistorical (
 
     constraint FK_PaymentHistoric_Payment foreign key (PaymentId) references Payments(Id)
 )
+
+-- Insert initial data
+
+insert into Users (Id, [Name]) values (newid(), 'Augusto Henrique Tomba Pereira')
+insert into Plans (Id, [Name], [Description], Price, [Key], BillingInterval, IsActive, CreatedAt) values (newid(), 'Basic', 'Basic plan', 18.9, 'b-p', 30, 1, getdate())
+insert into Coupons (Id, PlanId, CountUses, IsActived) values (newid(), (select top 1 Id from Plans), 1, 1)
+insert into Coupons (Id, PlanId, CountUses, IsActived) values (newid(), (select top 1 Id from Plans), 3, 1)
+insert into Items (Id, [Description], Price) values (newid(), 'Book Clean Code', 36.9)

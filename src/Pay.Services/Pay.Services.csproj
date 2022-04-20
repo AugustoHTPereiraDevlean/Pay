@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\Pay.Models\Pay.Models.csproj" />
     <ProjectReference Include="..\Pay.Data\Pay.Data.csproj" />
+    <ProjectReference Include="..\Pay.Core\Pay.Core.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

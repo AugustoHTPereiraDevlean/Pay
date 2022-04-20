@@ -1,8 +1,6 @@
-using Pay.Models;
-
-namespace Pay.Data.Base
+namespace Pay.Core.Base
 {
-    public interface IRepository<T>
+    public interface IRepositoryBase<T>
     {
         Task InsertAsync(T model);
         Task UpdateAsync(T model);

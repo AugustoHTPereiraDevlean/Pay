@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Pay.Data\Pay.Data.csproj" />
     <ProjectReference Include="..\Pay.Services\Pay.Services.csproj" />
+    <ProjectReference Include="..\Pay.Core\Pay.Core.csproj" />
   </ItemGroup>
 
 </Project>

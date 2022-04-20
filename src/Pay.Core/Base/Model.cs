@@ -1,6 +1,6 @@
 using System;
 
-namespace Pay.Models.Base
+namespace Pay.Core.Base
 {
     public abstract class Model
     {

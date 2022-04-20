@@ -1,8 +1,8 @@
-using Pay.Data.Abstractions;
 using Pay.Data.Base;
 using Pay.Data.Connection;
-using Pay.Models;
 using Dapper;
+using Pay.Core.Abstractions.Repositories;
+using Pay.Core.Models;
 
 namespace Pay.Data.Repositories
 {

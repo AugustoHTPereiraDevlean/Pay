@@ -1,6 +1,6 @@
-using Pay.Models.Base;
+using Pay.Core.Base;
 
-namespace Pay.Models
+namespace Pay.Core.Models
 {
     public class Coupon : Model
     {
