@@ -30,6 +30,14 @@ namespace Pay.Data.Repositories
             }
         }
 
+        public async Task<IEnumerable<Subscription>> SelectByUserAsync(Guid userId)
+        {
+            using (Connection)
+            {
+                return await Connection.QueryAsync<Subscription>("select * from Subscriptions where UserId = @UserId", new { UserId = userId });
+            }
+        }
+
         public async Task UpdateAsync(Subscription model)
         {
             using (Connection)
