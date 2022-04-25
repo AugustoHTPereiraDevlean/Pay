@@ -1,8 +1,8 @@
 using Pay.Core.Abstractions.Repositories;
 using Pay.Core.Abstractions.Services;
+using Pay.Core.Base;
 using Pay.Core.Models;
 using Pay.Core.ValueObjects;
-using Pay.Services.Responses;
 
 namespace Pay.Services
 {
@@ -17,7 +17,7 @@ namespace Pay.Services
         private readonly IOrderItemRepository _orderItemRepository;
         private readonly ICouponPlanUserRepository _couponPlanUserRepository;
 
-        public SubscriptionService(IUserRepository userRepository, ISubscriptionHistoricRepository subscriptionHistoricRepository, ISubscriptionRepository subscriptionRepository, IPlanRepository planRepository, ICouponRepository couponRepository, IOrderRepository orderRepository, IOrderItemRepository orderItemRepository)
+        public SubscriptionService(IUserRepository userRepository, ISubscriptionHistoricRepository subscriptionHistoricRepository, ISubscriptionRepository subscriptionRepository, IPlanRepository planRepository, ICouponRepository couponRepository, IOrderRepository orderRepository, IOrderItemRepository orderItemRepository, ICouponPlanUserRepository couponPlanUserRepository)
         {
             _userRepository = userRepository;
             _subscriptionHistoricRepository = subscriptionHistoricRepository;
@@ -26,9 +26,10 @@ namespace Pay.Services
             _couponRepository = couponRepository;
             _orderRepository = orderRepository;
             _orderItemRepository = orderItemRepository;
+            _couponPlanUserRepository = couponPlanUserRepository;
         }
 
-        public async Task SubscribeAsync(Guid planId, Guid userId, PaymentMethod paymentMethod, string? discountCode = null)
+        public async Task<ServiceResponse> SubscribeAsync(Guid planId, Guid userId, PaymentMethod paymentMethod, string? discountCode = null)
         {
             // Check if plan exists
             var plan = await _planRepository.SelectAsync(planId);
@@ -46,9 +47,12 @@ namespace Pay.Services
 
             // Check if user already has subscribed to this plan
             var userSubscription = await _subscriptionRepository.SelectByUserAsync(userId);
-            if (userSubscription.Any(s => s.Plan.Id == planId))
+            if (userSubscription != null)
             {
-                AddNotification("User already subscribed to this plan");
+                if (userSubscription.Any(s => s.Plan.Id == planId && s.IsActived))
+                {
+                    AddNotification("User already subscribed to this plan");
+                }
             }
 
             // Check if discount code exists and is valid for this context
@@ -65,8 +69,7 @@ namespace Pay.Services
                 {
                     AddNotification("Invalid discount code");
                 }
-
-                if (coupon != null)
+                else
                 {
                     if (coupon.Plan.Id != planId)
                     {
@@ -86,7 +89,7 @@ namespace Pay.Services
 
             if (!IsSuccessfully)
             {
-                return;
+                return CreateResponse();
             }
 
             // Create order
@@ -98,27 +101,35 @@ namespace Pay.Services
 
             var order = new Order();
             order.User = user;
+            order.PaymentMethod = paymentMethod;
+            order.Coupon = coupon;
+            orderItem.Order = order;
             order.Items.Add(orderItem);
 
             // Create subscription
             var subscription = new Subscription();
             subscription.Plan = plan;
             subscription.User = user;
-            subscription.PaymentMethod = paymentMethod;
             subscription.Price = plan.Price;
             subscription.Order = order;
             subscription.IsActived = true;
-            subscription.Coupon = coupon;
+
+            var subscriptionHistoric = new SubscriptionHistoric();
+            subscriptionHistoric.Subscription = subscription;
+            subscriptionHistoric.Historic = $"asigned to plan";
 
             // Store data
             await _orderRepository.InsertAsync(order);
             await _orderItemRepository.InsertAsync(orderItem);
             await _subscriptionRepository.InsertAsync(subscription);
+            await _subscriptionHistoricRepository.InsertAsync(subscriptionHistoric);
 
             if (coupon != null)
                 await _couponPlanUserRepository.InsertAsync(new CouponPlanUser { Coupon = coupon, Plan = plan, User = user });
 
             // TODO: Try to pay the subscription
+
+            return CreateResponse(subscription.Id);
         }
 
         public Task UnSubscribeAsync(Guid subscriptionId)

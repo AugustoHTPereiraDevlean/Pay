@@ -8,7 +8,7 @@ namespace Pay.Data.Repositories
 {
     public class OrderItemRepository : Repository, IOrderItemRepository
     {
-        public OrderItemRepository(SqlServerOptions options) 
+        public OrderItemRepository(SqlServerOptions options)
             : base(options)
         {
 
@@ -18,7 +18,16 @@ namespace Pay.Data.Repositories
         {
             using (Connection)
             {
-                await Connection.ExecuteAsync("insert into OrderItems (Id, OrderId, ObjectId, ObjectType, Price, Quantity, CreatedAt) values (@Id, @OrderId, @ObjectId, @ObjectType, @Price, @Quantity, @CreatedAt)", model);
+                await Connection.ExecuteAsync("insert into OrderItems (Id, OrderId, ObjectId, ObjectType, Price, Quantity, CreatedAt) values (@Id, @OrderId, @ObjectId, @ObjectType, @Price, @Quantity, @CreatedAt)", new
+                {
+                    Id = model.Id,
+                    OrderId = model.Order.Id,
+                    ObjectId = model.ObjectId,
+                    ObjectType = model.ObjectType,
+                    Price = model.Price,
+                    Quantity = model.Quantity,
+                    CreatedAt = model.CreatedAt
+                });
             }
         }
 
@@ -34,7 +43,7 @@ namespace Pay.Data.Repositories
         {
             using (Connection)
             {
-                await Connection.ExecuteAsync("update OrderItems set OrderId = @OrderId, ObjectId = @ObjectId, ObjectType = @ObjectType, Price = @Price, Quantity = @Quantity, CreatedAt = @CreatedAt where Id = @Id", model); 
+                await Connection.ExecuteAsync("update OrderItems set OrderId = @OrderId, ObjectId = @ObjectId, ObjectType = @ObjectType, Price = @Price, Quantity = @Quantity, CreatedAt = @CreatedAt where Id = @Id", model);
             }
         }
     }

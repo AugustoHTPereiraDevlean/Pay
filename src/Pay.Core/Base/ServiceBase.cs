@@ -1,4 +1,4 @@
-namespace Pay.Services.Responses
+namespace Pay.Core.Base
 {
     public class ServiceBase
     {
@@ -34,6 +34,26 @@ namespace Pay.Services.Responses
         {
             _notifications.Clear();
             return this;
+        }
+
+        protected ServiceResponse CreateResponse(Guid aggregateId)
+        {
+            return new ServiceResponse
+            {
+                AggregateId = aggregateId,
+                IsSuccessfully = IsSuccessfully,
+                Notifications = Notifications.ToArray()
+            };
+        }
+
+        protected ServiceResponse CreateResponse()
+        {
+            return new ServiceResponse
+            {
+                AggregateId = Guid.Empty,
+                IsSuccessfully = IsSuccessfully,
+                Notifications = Notifications.ToArray()
+            };
         }
         #endregion
     }

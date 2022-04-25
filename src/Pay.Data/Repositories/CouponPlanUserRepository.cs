@@ -18,7 +18,13 @@ namespace Pay.Data.Repositories
         {
             using (Connection)
             {
-                await Connection.ExecuteAsync("insert into CouponPlanUser (Id, PlanId, CouponId, UserId, CreatedAt) values (@Id, @PlanId, @CouponId, @UserId, @CreatedAt)", model);
+                await Connection.ExecuteAsync("insert into CouponPlanUser (Id, PlanId, CouponId, UserId, CreatedAt) values (@Id, @PlanId, @CouponId, @UserId, @CreatedAt)", new {
+                    Id = model.Id,
+                    PlanId = model.Plan.Id,
+                    CouponId = model.Coupon.Id,
+                    UserId = model.User.Id,
+                    CreatedAt = model.CreatedAt
+                });
             }
         }
 

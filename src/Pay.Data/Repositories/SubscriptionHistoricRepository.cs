@@ -8,7 +8,7 @@ namespace Pay.Data.Repositories
 {
     public class SubscriptionHistoricRepository : Repository, ISubscriptionHistoricRepository
     {
-        public SubscriptionHistoricRepository(SqlServerOptions options) 
+        public SubscriptionHistoricRepository(SqlServerOptions options)
             : base(options)
         {
 
@@ -18,7 +18,13 @@ namespace Pay.Data.Repositories
         {
             using (Connection)
             {
-                await Connection.ExecuteAsync("insert into SubscriptionHistoricals (Id, SubscriptionId, Historic, CreatedAt) values (@Id, @SubscriptionId, @Historic, @CreatedAt)", model);
+                await Connection.ExecuteAsync("insert into SubscriptionHistorical (Id, SubscriptionId, Historic, CreatedAt) values (@Id, @SubscriptionId, @Historic, @CreatedAt)", new
+                {
+                    Id = model.Id,
+                    SubscriptionId = model.Subscription.Id,
+                    Historic = model.Historic,
+                    CreatedAt = model.CreatedAt
+                });
             }
         }
 
@@ -26,7 +32,7 @@ namespace Pay.Data.Repositories
         {
             using (Connection)
             {
-                return await Connection.QueryFirstOrDefaultAsync<SubscriptionHistoric>("select * from SubscriptionHistoricals where Id = @Id", new { Id = id });
+                return await Connection.QueryFirstOrDefaultAsync<SubscriptionHistoric>("select * from SubscriptionHistorical where Id = @Id", new { Id = id });
             }
         }
 
@@ -34,7 +40,7 @@ namespace Pay.Data.Repositories
         {
             using (Connection)
             {
-                return await Connection.QueryAsync<SubscriptionHistoric>("select * from SubscriptionHistoricals where SubscriptionId = @SubscriptionId", new { SubscriptionId = subscriptionId });
+                return await Connection.QueryAsync<SubscriptionHistoric>("select * from SubscriptionHistorical where SubscriptionId = @SubscriptionId", new { SubscriptionId = subscriptionId });
             }
         }
 

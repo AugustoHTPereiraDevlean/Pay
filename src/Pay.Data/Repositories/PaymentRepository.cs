@@ -8,7 +8,7 @@ namespace Pay.Data.Repositories
 {
     public class PaymentRepository : Repository, IPaymentRepository
     {
-        public PaymentRepository(SqlServerOptions options) 
+        public PaymentRepository(SqlServerOptions options)
             : base(options)
         {
 
@@ -18,7 +18,14 @@ namespace Pay.Data.Repositories
         {
             using (Connection)
             {
-                await Connection.ExecuteAsync("insert into Payments (Id, OrderId, Price, Status, CreatedAt) values (@Id, @OrderId, @Price, @Status, @CreatedAt)", model);
+                await Connection.ExecuteAsync("insert into Payments (Id, OrderId, Price, Status, CreatedAt) values (@Id, @OrderId, @Price, @Status, @CreatedAt)", new
+                {
+                    Id = model.Id,
+                    OrderId = model.Order.Id,
+                    Price = model.Price,
+                    Status = model.Status,
+                    CreatedAt = model.CreatedAt
+                });
             }
         }
 
@@ -34,7 +41,7 @@ namespace Pay.Data.Repositories
         {
             using (Connection)
             {
-                await Connection.ExecuteAsync("update Payments set OrderId = @OrderId, Price = @Price, Status = @Status, CreatedAt = @CreatedAt where Id = @Id", model); 
+                await Connection.ExecuteAsync("update Payments set OrderId = @OrderId, Price = @Price, Status = @Status, CreatedAt = @CreatedAt where Id = @Id", model);
             }
         }
     }

@@ -8,7 +8,7 @@ namespace Pay.Data.Repositories
 {
     public class PaymentHistoricRepository : Repository, IPaymentHistoricRepository
     {
-        public PaymentHistoricRepository(SqlServerOptions options) 
+        public PaymentHistoricRepository(SqlServerOptions options)
             : base(options)
         {
 
@@ -18,7 +18,13 @@ namespace Pay.Data.Repositories
         {
             using (Connection)
             {
-                await Connection.ExecuteAsync("insert into PaymentHistoricals (Id, PaymentId, Historic, CreatedAt) values (@Id, @PaymentId, @Historic, @CreatedAt)", model);
+                await Connection.ExecuteAsync("insert into PaymentHistoricals (Id, PaymentId, Historic, CreatedAt) values (@Id, @PaymentId, @Historic, @CreatedAt)", new
+                {
+                    Id = model.Id,
+                    PaymentId = model.Payment.Id,
+                    Historic = model.Historic,
+                    CreatedAt = model.CreatedAt
+                });
             }
         }
 
@@ -27,7 +33,7 @@ namespace Pay.Data.Repositories
             using (Connection)
             {
                 return await Connection.QueryFirstOrDefaultAsync<PaymentHistoric>("select * from PaymentHistoricals where Id = @Id", new { Id = id });
-            }            
+            }
         }
 
         public async Task<IEnumerable<PaymentHistoric>> SelectByPaymentIdAsync(Guid paymentId)

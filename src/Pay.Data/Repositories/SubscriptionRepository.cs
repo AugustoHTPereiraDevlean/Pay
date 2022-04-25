@@ -8,7 +8,7 @@ namespace Pay.Data.Repositories
 {
     public class SubscriptionRepository : Repository, ISubscriptionRepository
     {
-        public SubscriptionRepository(SqlServerOptions options) 
+        public SubscriptionRepository(SqlServerOptions options)
             : base(options)
         {
 
@@ -18,7 +18,16 @@ namespace Pay.Data.Repositories
         {
             using (Connection)
             {
-                await Connection.ExecuteAsync("insert into Subscriptions (Id, PlanId, UserId, Price, IsActived, CreatedAt) values (@Id, @PlanId, @UserId, @Price, @IsActived, @CreatedAt)", model);
+                await Connection.ExecuteAsync("insert into Subscriptions (Id, PlanId, UserId, OrderId, Price, IsActived, CreatedAt) values (@Id, @PlanId, @UserId, @OrderId, @Price, @IsActived, @CreatedAt)", new
+                {
+                    Id = model.Id,
+                    PlanId = model.Plan.Id,
+                    UserId = model.User.Id,
+                    Price = model.Price,
+                    IsActived = model.IsActived,
+                    CreatedAt = model.CreatedAt,
+                    OrderId = model.Order.Id,
+                });
             }
         }
 
@@ -34,7 +43,17 @@ namespace Pay.Data.Repositories
         {
             using (Connection)
             {
-                return await Connection.QueryAsync<Subscription>("select * from Subscriptions where UserId = @UserId", new { UserId = userId });
+                return await Connection.QueryAsync<Subscription, Plan, Subscription>(
+                    sql: @" select S.*, P.* from Subscriptions S 
+                            inner join Plans P on P.Id = S.PlanId
+                            where S.UserId = 'a529e9c5-7565-4079-a1b5-a24bc9f67020'",
+                    param: new { UserId = userId },
+                    map: (subscription, plan) =>
+                    {
+                        subscription.Plan = plan;
+                        return subscription;
+                    }
+                );
             }
         }
 
@@ -42,7 +61,7 @@ namespace Pay.Data.Repositories
         {
             using (Connection)
             {
-                await Connection.ExecuteAsync("update Subscriptions set PlanId = @PlanId, UserId = @UserId, Price = @Price, IsActived = @IsActived where Id = @Id", model); 
+                await Connection.ExecuteAsync("update Subscriptions set PlanId = @PlanId, UserId = @UserId, Price = @Price, IsActived = @IsActived where Id = @Id", model);
             }
         }
     }

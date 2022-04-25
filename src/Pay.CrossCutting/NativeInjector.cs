@@ -24,6 +24,7 @@ namespace Pay.CrossCutting
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IOrderItemRepository, OrderItemRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ICouponPlanUserRepository, CouponPlanUserRepository>();
 
             return services;
         }

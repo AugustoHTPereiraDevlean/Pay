@@ -8,7 +8,7 @@ namespace Pay.Data.Repositories
 {
     public class CouponRepository : Repository, ICouponRepository
     {
-        public CouponRepository(SqlServerOptions options) 
+        public CouponRepository(SqlServerOptions options)
             : base(options)
         {
 
@@ -18,7 +18,14 @@ namespace Pay.Data.Repositories
         {
             using (Connection)
             {
-                await Connection.ExecuteAsync("insert into Coupons (Id, PlanId, CountUses, IsActived, CreatedAt) values (@Id, @PlanId, @CountUses, @IsActived, @CreatedAt)", model);
+                await Connection.ExecuteAsync("insert into Coupons (Id, PlanId, CountUses, IsActived, CreatedAt) values (@Id, @PlanId, @CountUses, @IsActived, @CreatedAt)", new
+                {
+                    Id = model.Id,
+                    PlanId = model.Plan.Id,
+                    CountUses = model.CountUses,
+                    IsActived = model.IsActived,
+                    CreatedAt = model.CreatedAt
+                });
             }
         }
 
@@ -26,7 +33,17 @@ namespace Pay.Data.Repositories
         {
             using (Connection)
             {
-                return await Connection.QueryFirstOrDefaultAsync<Coupon>("select * from Coupons where Id = @Id", new { Id = id });
+                var coupons = await Connection.QueryAsync<Coupon, Plan, Coupon>(
+                    sql: "select * from Coupons C inner join Plans P on P.Id = C.PlanId where C.Id = @Id",
+                    param: new { Id = id },
+                    map: (coupon, plan) =>
+                    {
+                        coupon.Plan = plan;
+                        return coupon;
+                    }
+                );
+
+                return coupons.FirstOrDefault();
             }
         }
 
@@ -34,7 +51,7 @@ namespace Pay.Data.Repositories
         {
             using (Connection)
             {
-                await Connection.ExecuteAsync("update Coupons set PlanId = @PlanId, CountUses = @CountUses, IsActived = @IsActived where Id = @Id", model); 
+                await Connection.ExecuteAsync("update Coupons set PlanId = @PlanId, CountUses = @CountUses, IsActived = @IsActived where Id = @Id", model);
             }
         }
     }
