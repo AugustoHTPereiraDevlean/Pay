@@ -1,8 +1,10 @@
+using Pay.Core.Abstractions.Queue;
 using Pay.Core.Abstractions.Repositories;
 using Pay.Core.Abstractions.Services;
 using Pay.Core.Base;
 using Pay.Core.Models;
 using Pay.Core.ValueObjects;
+using Pay.Infra.Queue.Messages;
 
 namespace Pay.Services
 {
@@ -16,8 +18,19 @@ namespace Pay.Services
         private readonly IOrderRepository _orderRepository;
         private readonly IOrderItemRepository _orderItemRepository;
         private readonly ICouponPlanUserRepository _couponPlanUserRepository;
+        private readonly ISender _queue;
 
-        public SubscriptionService(IUserRepository userRepository, ISubscriptionHistoricRepository subscriptionHistoricRepository, ISubscriptionRepository subscriptionRepository, IPlanRepository planRepository, ICouponRepository couponRepository, IOrderRepository orderRepository, IOrderItemRepository orderItemRepository, ICouponPlanUserRepository couponPlanUserRepository)
+        public SubscriptionService(
+            IUserRepository userRepository,
+            ISubscriptionHistoricRepository subscriptionHistoricRepository,
+            ISubscriptionRepository subscriptionRepository,
+            IPlanRepository planRepository,
+            ICouponRepository couponRepository,
+            IOrderRepository orderRepository,
+            IOrderItemRepository orderItemRepository,
+            ICouponPlanUserRepository couponPlanUserRepository,
+            ISender queueSender
+        )
         {
             _userRepository = userRepository;
             _subscriptionHistoricRepository = subscriptionHistoricRepository;
@@ -27,6 +40,7 @@ namespace Pay.Services
             _orderRepository = orderRepository;
             _orderItemRepository = orderItemRepository;
             _couponPlanUserRepository = couponPlanUserRepository;
+            _queue = queueSender;
         }
 
         public async Task<ServiceResponse> SubscribeAsync(Guid planId, Guid userId, PaymentMethod paymentMethod, string? discountCode = null)
@@ -127,7 +141,9 @@ namespace Pay.Services
             if (coupon != null)
                 await _couponPlanUserRepository.InsertAsync(new CouponPlanUser { Coupon = coupon, Plan = plan, User = user });
 
-            // TODO: Try to pay the subscription
+
+            var paymentMessage = new PaymentMessage(order.TotalValue, order.TotalValue - order.Discount, order.Discount, order.Id);
+            await _queue.SendAsync(paymentMessage);
 
             return CreateResponse(subscription.Id);
         }

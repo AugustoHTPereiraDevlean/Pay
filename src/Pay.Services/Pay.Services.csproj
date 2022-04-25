@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Pay.Infra.Queue\Pay.Infra.Queue.csproj" />
     <ProjectReference Include="..\Pay.Data\Pay.Data.csproj" />
     <ProjectReference Include="..\Pay.Core\Pay.Core.csproj" />
   </ItemGroup>

@@ -1,8 +1,10 @@
 using Microsoft.Extensions.DependencyInjection;
-using Pay.Data.Connection;
+using Pay.Core.Abstractions.Queue;
 using Pay.Core.Abstractions.Repositories;
-using Pay.Data.Repositories;
 using Pay.Core.Abstractions.Services;
+using Pay.Data.Connection;
+using Pay.Data.Repositories;
+using Pay.Infra.Queue;
 using Pay.Services;
 
 namespace Pay.CrossCutting
@@ -38,6 +40,18 @@ namespace Pay.CrossCutting
             // services.AddScoped<IItemService, ItemService>();
             // services.AddScoped<IOrderService, OrderService>();
             // services.AddScoped<IUserService, UserService>();
+
+            return services;
+        }
+
+        public static IServiceCollection RegisterRabbitMQ(this IServiceCollection services, QueueOptions options)
+        {
+            if (options == null)
+                throw new ArgumentNullException(nameof(options));
+
+            services.AddSingleton(options);
+
+            services.AddScoped<ISender, QueueSender>();
 
             return services;
         }

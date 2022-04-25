@@ -1,27 +1,26 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30114.105
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32407.343
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{49C1D119-AE76-45A4-B44D-74122F1400D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pay.Core", "src\Pay.Core\Pay.Core.csproj", "{C30EE328-4CE4-44C3-8B56-A3FE4CB2EECB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pay.Core", "src\Pay.Core\Pay.Core.csproj", "{C30EE328-4CE4-44C3-8B56-A3FE4CB2EECB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pay.Data", "src\Pay.Data\Pay.Data.csproj", "{448A50D2-D6AB-41DC-BF52-637D991C2D60}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pay.Data", "src\Pay.Data\Pay.Data.csproj", "{448A50D2-D6AB-41DC-BF52-637D991C2D60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pay.CrossCutting", "src\Pay.CrossCutting\Pay.CrossCutting.csproj", "{3BB36487-08F6-4D54-A3E8-113CE4DFE98F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pay.CrossCutting", "src\Pay.CrossCutting\Pay.CrossCutting.csproj", "{3BB36487-08F6-4D54-A3E8-113CE4DFE98F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pay.Presentation.WebAPI", "src\Pay.Presentation.WebAPI\Pay.Presentation.WebAPI.csproj", "{CBF9A23A-5A20-4E02-89DD-0DDBC64180DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pay.Presentation.WebAPI", "src\Pay.Presentation.WebAPI\Pay.Presentation.WebAPI.csproj", "{CBF9A23A-5A20-4E02-89DD-0DDBC64180DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pay.Services", "src\Pay.Services\Pay.Services.csproj", "{5BAAF98B-0235-4F77-9850-6B07D27D6D5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pay.Services", "src\Pay.Services\Pay.Services.csproj", "{5BAAF98B-0235-4F77-9850-6B07D27D6D5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pay.Infra.Queue", "Pay.Infra.Queue\Pay.Infra.Queue.csproj", "{7851C40A-661A-4DFB-93B0-01223A2F6887}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C30EE328-4CE4-44C3-8B56-A3FE4CB2EECB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -44,6 +43,13 @@ Global
 		{5BAAF98B-0235-4F77-9850-6B07D27D6D5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BAAF98B-0235-4F77-9850-6B07D27D6D5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BAAF98B-0235-4F77-9850-6B07D27D6D5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7851C40A-661A-4DFB-93B0-01223A2F6887}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7851C40A-661A-4DFB-93B0-01223A2F6887}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7851C40A-661A-4DFB-93B0-01223A2F6887}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7851C40A-661A-4DFB-93B0-01223A2F6887}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C30EE328-4CE4-44C3-8B56-A3FE4CB2EECB} = {49C1D119-AE76-45A4-B44D-74122F1400D5}
@@ -51,5 +57,9 @@ Global
 		{3BB36487-08F6-4D54-A3E8-113CE4DFE98F} = {49C1D119-AE76-45A4-B44D-74122F1400D5}
 		{CBF9A23A-5A20-4E02-89DD-0DDBC64180DF} = {49C1D119-AE76-45A4-B44D-74122F1400D5}
 		{5BAAF98B-0235-4F77-9850-6B07D27D6D5A} = {49C1D119-AE76-45A4-B44D-74122F1400D5}
+		{7851C40A-661A-4DFB-93B0-01223A2F6887} = {49C1D119-AE76-45A4-B44D-74122F1400D5}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8B88244D-9FAF-46E0-83D9-EB62D360D644}
 	EndGlobalSection
 EndGlobal

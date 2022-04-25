@@ -1,9 +1,12 @@
 using Pay.CrossCutting;
+using Pay.Infra.Queue;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.RegisterRepositories(builder.Configuration.GetConnectionString("DefaultConnection"));
-builder.Services.RegisterServices();
+builder.Services
+    .RegisterRepositories(builder.Configuration.GetConnectionString("DefaultConnection"))
+    .RegisterRabbitMQ(builder.Configuration.GetSection("RabbitMQ").Get<QueueOptions>())
+    .RegisterServices();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
