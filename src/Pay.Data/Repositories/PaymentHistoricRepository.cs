@@ -18,7 +18,7 @@ namespace Pay.Data.Repositories
         {
             using (Connection)
             {
-                await Connection.ExecuteAsync("insert into PaymentHistoricals (Id, PaymentId, Historic, CreatedAt) values (@Id, @PaymentId, @Historic, @CreatedAt)", new
+                await Connection.ExecuteAsync("insert into PaymentHistorical (Id, PaymentId, Historic, CreatedAt) values (@Id, @PaymentId, @Historic, @CreatedAt)", new
                 {
                     Id = model.Id,
                     PaymentId = model.Payment.Id,
@@ -32,7 +32,7 @@ namespace Pay.Data.Repositories
         {
             using (Connection)
             {
-                return await Connection.QueryFirstOrDefaultAsync<PaymentHistoric>("select * from PaymentHistoricals where Id = @Id", new { Id = id });
+                return await Connection.QueryFirstOrDefaultAsync<PaymentHistoric>("select * from PaymentHistorical where Id = @Id", new { Id = id });
             }
         }
 
@@ -40,7 +40,7 @@ namespace Pay.Data.Repositories
         {
             using (Connection)
             {
-                return await Connection.QueryAsync<PaymentHistoric>("select * from PaymentHistoricals where PaymentId = @PaymentId", new { PaymentId = paymentId });
+                return await Connection.QueryAsync<PaymentHistoric>("select * from PaymentHistorical where PaymentId = @PaymentId", new { PaymentId = paymentId });
             }
         }
 
@@ -48,7 +48,7 @@ namespace Pay.Data.Repositories
         {
             using (Connection)
             {
-                await Connection.ExecuteAsync("update PaymentHistoricals set Historic = @Historic where Id = @Id", model);
+                await Connection.ExecuteAsync("update PaymentHistorical set Historic = @Historic where Id = @Id", model);
             }
         }
     }

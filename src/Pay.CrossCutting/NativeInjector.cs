@@ -5,6 +5,7 @@ using Pay.Core.Abstractions.Services;
 using Pay.Data.Connection;
 using Pay.Data.Repositories;
 using Pay.Infra.Queue;
+using Pay.Infra.Queue.Workers;
 using Pay.Services;
 
 namespace Pay.CrossCutting
@@ -34,8 +35,8 @@ namespace Pay.CrossCutting
         public static IServiceCollection RegisterServices(this IServiceCollection services)
         {
             services.AddScoped<ISubscriptionService, SubscriptionService>();
+            services.AddScoped<IPaymentService, PaymentService>();
             // services.AddScoped<IPlanService, PlanService>();
-            // services.AddScoped<IPaymentService, PaymentService>();
             // services.AddScoped<ICouponService, CouponService>();
             // services.AddScoped<IItemService, ItemService>();
             // services.AddScoped<IOrderService, OrderService>();
@@ -44,7 +45,7 @@ namespace Pay.CrossCutting
             return services;
         }
 
-        public static IServiceCollection RegisterRabbitMQ(this IServiceCollection services, QueueOptions options)
+        public static IServiceCollection RegisterMessaging(this IServiceCollection services, QueueOptions options)
         {
             if (options == null)
                 throw new ArgumentNullException(nameof(options));
@@ -52,6 +53,7 @@ namespace Pay.CrossCutting
             services.AddSingleton(options);
 
             services.AddScoped<ISender, QueueSender>();
+            services.AddHostedService<PaymentConsumer>();
 
             return services;
         }

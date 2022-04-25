@@ -18,13 +18,15 @@ namespace Pay.Data.Repositories
         {
             using (Connection)
             {
-                await Connection.ExecuteAsync("insert into Payments (Id, OrderId, Price, Status, CreatedAt) values (@Id, @OrderId, @Price, @Status, @CreatedAt)", new
+                await Connection.ExecuteAsync("insert into Payments (Id, OrderId, Price, PaidValue, Discount, Status, CreatedAt) values (@Id, @OrderId, @Price, @PaidValue, @Discount, @Status, @CreatedAt)", new
                 {
                     Id = model.Id,
                     OrderId = model.Order.Id,
                     Price = model.Price,
                     Status = model.Status,
-                    CreatedAt = model.CreatedAt
+                    CreatedAt = model.CreatedAt,
+                    PaidValue = model.PaidValue,
+                    Discount = model.Discount
                 });
             }
         }

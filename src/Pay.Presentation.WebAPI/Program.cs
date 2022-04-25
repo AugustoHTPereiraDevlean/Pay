@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
     .RegisterRepositories(builder.Configuration.GetConnectionString("DefaultConnection"))
-    .RegisterRabbitMQ(builder.Configuration.GetSection("RabbitMQ").Get<QueueOptions>())
+    .RegisterMessaging(builder.Configuration.GetSection("RabbitMQ").Get<QueueOptions>())
     .RegisterServices();
 
 builder.Services.AddControllers();
