@@ -66,8 +66,6 @@ namespace Pay.Infra.Queue.Workers
         {
             try
             {
-                await Task.Delay(5000);
-
                 using (var scope = _serviceProvider.CreateScope())
                 {
                     var paymentService = scope.ServiceProvider.GetRequiredService<IPaymentService>();

@@ -39,11 +39,49 @@ namespace Pay.Data.Repositories
             }
         }
 
+        public async Task<IEnumerable<Payment>> SelectBankslipWaitingPayment()
+        {
+            using (Connection)
+            {
+                return await Connection.QueryAsync<Payment, Order, Payment>(
+                    sql: @" select 
+                                P.*, O.*
+                            from Payments P 
+                            inner join Orders O on O.Id = P.OrderId
+                            where P.[Status] = 'Waiting' and O.PaymentMethod = 'Bankslip'",
+                    map: (payment, order) =>
+                    {
+                        payment.Order = order;
+                        return payment;
+                    }
+                );
+            }
+        }
+
+        public async Task<IEnumerable<Payment>> SelectCreditCardWaitingPayment()
+        {
+            using (Connection)
+            {
+                return await Connection.QueryAsync<Payment, Order, Payment>(
+                    sql: @" select 
+                                P.*, O.*
+                            from Payments P 
+                            inner join Orders O on O.Id = P.OrderId
+                            where P.[Status] = 'Waiting' and O.PaymentMethod = 'CreditCard'",
+                    map: (payment, order) =>
+                    {
+                        payment.Order = order;
+                        return payment;
+                    }
+                );
+            }
+        }
+
         public async Task UpdateAsync(Payment model)
         {
             using (Connection)
             {
-                await Connection.ExecuteAsync("update Payments set OrderId = @OrderId, Price = @Price, Status = @Status, CreatedAt = @CreatedAt where Id = @Id", model);
+                await Connection.ExecuteAsync("update Payments set Status = @Status where Id = @Id", model);
             }
         }
     }

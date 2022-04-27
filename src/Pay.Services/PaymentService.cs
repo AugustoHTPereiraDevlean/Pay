@@ -15,12 +15,15 @@ namespace Pay.Services
         private readonly IOrderRepository _orderRepository;
         private readonly IPaymentRepository _paymentRepository;
         private readonly IPaymentHistoricRepository _paymentHistoricRepository;
+        private readonly ISubscriptionRepository _subscriptionRepository;
+        private readonly ISubscriptionHistoricRepository _subscriptionHistoricRepository;
 
-        public PaymentService(IOrderRepository orderRepository, IPaymentRepository paymentRepository, IPaymentHistoricRepository paymentHistoricRepository)
+        public PaymentService(IOrderRepository orderRepository, IPaymentRepository paymentRepository, IPaymentHistoricRepository paymentHistoricRepository, ISubscriptionRepository subscriptionRepository)
         {
             _orderRepository = orderRepository;
             _paymentRepository = paymentRepository;
             _paymentHistoricRepository = paymentHistoricRepository;
+            _subscriptionRepository = subscriptionRepository;
         }
 
         public async Task<ServiceResponse> CreatePayment(Guid orderId, decimal price, decimal discount, decimal paidValue)
@@ -48,6 +51,55 @@ namespace Pay.Services
             {
                 throw;
             }
+        }
+
+        public async Task<ServiceResponse> ProcessWaitingPayments(IEnumerable<Payment> payments)
+        {
+            #region Update payment status to processing
+            foreach (var payment in payments)
+            {
+                payment.Status = "Processing";
+                await _paymentRepository.UpdateAsync(payment);
+
+                var paymentHistoric = new PaymentHistoric();
+                paymentHistoric.Payment = payment;
+                paymentHistoric.Historic = $"Start processing";
+                await _paymentHistoricRepository.InsertAsync(paymentHistoric);
+            }
+            #endregion
+
+            // Consume payment gateway
+
+            foreach (var payment in payments)
+            {
+                #region Update payment status to paid
+                payment.Status = "Paid";
+                await _paymentRepository.UpdateAsync(payment);
+
+                var paymentHistoric = new PaymentHistoric();
+                paymentHistoric.Payment = payment;
+                paymentHistoric.Historic = $"payment has been paid";
+                await _paymentHistoricRepository.InsertAsync(paymentHistoric);
+                #endregion
+
+                #region Activate subscription
+                var subscription = await _subscriptionRepository.SelectByOrderIdAsync(payment.Order.Id);
+                if (subscription != null)
+                {
+                    if (!subscription.IsActived)
+                    {
+                        await _subscriptionRepository.UpdateIsActivedAsync(subscription.Id, true);
+
+                        var subscriptionHistoric = new SubscriptionHistoric();
+                        subscriptionHistoric.Subscription = subscription;
+                        subscriptionHistoric.Historic = "subscription has been actived";
+                        await _subscriptionHistoricRepository.InsertAsync(subscriptionHistoric);
+                    }
+                } 
+                #endregion
+            }
+
+            return CreateResponse();
         }
     }
 }

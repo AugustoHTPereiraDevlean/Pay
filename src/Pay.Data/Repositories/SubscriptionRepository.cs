@@ -39,6 +39,14 @@ namespace Pay.Data.Repositories
             }
         }
 
+        public async Task<Subscription> SelectByOrderIdAsync(Guid orderId)
+        {
+            using (Connection)
+            {
+                return await Connection.QueryFirstOrDefaultAsync<Subscription>(@"select * from Subscriptions where OrderId = @orderId", new { orderId });
+            }
+        }
+
         public async Task<IEnumerable<Subscription>> SelectByUserAsync(Guid userId)
         {
             using (Connection)
@@ -62,6 +70,14 @@ namespace Pay.Data.Repositories
             using (Connection)
             {
                 await Connection.ExecuteAsync("update Subscriptions set PlanId = @PlanId, UserId = @UserId, Price = @Price, IsActived = @IsActived where Id = @Id", model);
+            }
+        }
+
+        public async Task UpdateIsActivedAsync(Guid subscriptionId, bool isActived)
+        {
+            using (Connection)
+            {
+                await Connection.ExecuteAsync("update Subscriptions set IsActived = @isActived where Id = @Id", new { subscriptionId, isActived });
             }
         }
     }

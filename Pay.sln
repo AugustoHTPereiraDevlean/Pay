@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pay.Presentation.WebAPI", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pay.Services", "src\Pay.Services\Pay.Services.csproj", "{5BAAF98B-0235-4F77-9850-6B07D27D6D5A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pay.Infra.Queue", "Pay.Infra.Queue\Pay.Infra.Queue.csproj", "{7851C40A-661A-4DFB-93B0-01223A2F6887}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pay.Infra.Queue", "Pay.Infra.Queue\Pay.Infra.Queue.csproj", "{7851C40A-661A-4DFB-93B0-01223A2F6887}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pay.Infra.BackgroundJob", "Pay.Infra.BackgroundJob\Pay.Infra.BackgroundJob.csproj", "{9AA9D4D3-708F-4081-83EF-481F1E2FFE77}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{7851C40A-661A-4DFB-93B0-01223A2F6887}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7851C40A-661A-4DFB-93B0-01223A2F6887}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7851C40A-661A-4DFB-93B0-01223A2F6887}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AA9D4D3-708F-4081-83EF-481F1E2FFE77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AA9D4D3-708F-4081-83EF-481F1E2FFE77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AA9D4D3-708F-4081-83EF-481F1E2FFE77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AA9D4D3-708F-4081-83EF-481F1E2FFE77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +64,7 @@ Global
 		{CBF9A23A-5A20-4E02-89DD-0DDBC64180DF} = {49C1D119-AE76-45A4-B44D-74122F1400D5}
 		{5BAAF98B-0235-4F77-9850-6B07D27D6D5A} = {49C1D119-AE76-45A4-B44D-74122F1400D5}
 		{7851C40A-661A-4DFB-93B0-01223A2F6887} = {49C1D119-AE76-45A4-B44D-74122F1400D5}
+		{9AA9D4D3-708F-4081-83EF-481F1E2FFE77} = {49C1D119-AE76-45A4-B44D-74122F1400D5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8B88244D-9FAF-46E0-83D9-EB62D360D644}

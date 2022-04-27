@@ -1,4 +1,5 @@
 using Pay.Core.Base;
+using Pay.Core.Models;
 using Pay.Core.ValueObjects;
 
 namespace Pay.Core.Abstractions.Services
@@ -7,5 +8,6 @@ namespace Pay.Core.Abstractions.Services
     {
         Task<ServiceResponse> SubscribeAsync(Guid planId, Guid userId, PaymentMethod paymentMethod, string? discountCode = null);
         Task UnSubscribeAsync(Guid subscriptionId);
+        Task ProcessAsync(IEnumerable<Subscription> subscriptions);
     }
 }

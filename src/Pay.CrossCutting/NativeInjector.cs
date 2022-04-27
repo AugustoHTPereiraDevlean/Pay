@@ -4,6 +4,7 @@ using Pay.Core.Abstractions.Repositories;
 using Pay.Core.Abstractions.Services;
 using Pay.Data.Connection;
 using Pay.Data.Repositories;
+using Pay.Infra.BackgroundJob.Jobs;
 using Pay.Infra.Queue;
 using Pay.Infra.Queue.Workers;
 using Pay.Services;
@@ -54,6 +55,15 @@ namespace Pay.CrossCutting
 
             services.AddScoped<ISender, QueueSender>();
             services.AddHostedService<PaymentConsumer>();
+
+            return services;
+        }
+
+        public static IServiceCollection RegisterBackgroundJobs(this IServiceCollection services)
+        {
+            services.AddHostedService<CreditCardPaymentBackgroundJob>();
+            services.AddHostedService<BankslipPaymentBackgroundJob>();
+            services.AddHostedService<SubscriptionBackgroundJob>();
 
             return services;
         }
